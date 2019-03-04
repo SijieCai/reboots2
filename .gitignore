@@ -1,0 +1,11 @@
+
+**node_modules
+# Debug log from npm
+**npm-debug.log
+# IntelliJ IDE ignore
+.idea
+# Visual Studio Code
+.vscode
+.history
+# OSX Files
+.DS_Store

@@ -1,0 +1,32 @@
+server {
+  listen 80;
+  server_name <replace_domain>;
+  rewrite ^/(.*)$ http://<replace_domain>:8360/$1 permanent;
+}
+ 
+
+server {
+  listen 8360;
+
+  server_name <replace_domain>;
+  root  /home/q/system/<replace_domain>/public;
+  index index.html;
+
+  access_log  /data/nginx/logs/<replace_domain>.access.log;
+  error_log /data/nginx/logs/<replace_domain>.error.log;
+
+  gzip              on;
+  gzip_buffers      16 8k;
+  gzip_comp_level   4;
+  gzip_min_length   1024;
+  gzip_types        text/plain application/x-javascript application/javascript text/css application/xml text/javascript application/x-httpd-php;
+  gzip_vary         on;
+ 
+  <replace_entries>
+
+  location ~ .*\.(php|php5)?$ {
+      include       fastcgi.conf;
+      fastcgi_pass  127.0.0.1:9000;
+      fastcgi_index index.php;
+  }
+}
