@@ -1,4 +1,4 @@
-import { createConfig, build } from './src';
+import { createConfig } from 'reboots2';
 
 const config = createConfig(() => {
   return [
@@ -27,6 +27,4 @@ config.optimization = {
       }
     }
   }
-}
-
-build(config);
+} 
