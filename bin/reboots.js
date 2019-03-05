@@ -13,21 +13,17 @@ switch (script) {
     init(appRoot);
     break;
   }
-  case 'build':
   case 'start':
-  case 'upload':
-  case 'upload-queries':
-  case 'test': {
-    const ars = [require.resolve(path.join('../scripts', script))].concat(args);
-    const result = spawn.sync(
-      'node',
-      ars,
-      { stdio: 'inherit' }
-    );
-    process.exit(result.status);
-    break;
-  }
+    { 
+      require('../src/start');
+      break;
+    }
+  case 'build':
+    { 
+      require('../src/build');
+      break;
+    }
   default:
     console.log(`Unknown script "${script}".`);
     break;
-} 
+}

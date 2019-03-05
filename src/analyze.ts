@@ -9,7 +9,7 @@ configs.forEach((config, i) => {
   }));
 });
 
-function report(err, stats) {
+function report(err: any, stats: any) {
   if (err || stats.hasErrors()) {
     console.error(err);
   }

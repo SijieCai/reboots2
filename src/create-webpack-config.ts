@@ -1,9 +1,10 @@
 
 
-import webpack, { Configuration, Options } from 'webpack';
+import * as webpack from 'webpack';
+import { Configuration, Options } from 'webpack';
 import 'webpack-dev-server';
 const appRootDir = require('app-root-dir').get();
-import path, { resolve } from 'path';
+import * as path from 'path';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CreateFileWebpack = require('create-file-webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -30,7 +31,7 @@ export interface BuildOptions {
 }
 
 function toApp(relativePath?: string) {
-  return path.resolve(appRootDir, 'src/app', relativePath);
+  return path.resolve(appRootDir, 'src/', relativePath);
 }
 
 export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry[] }): Configuration {
@@ -97,7 +98,7 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
       return obj;
     }, {} as { [index: string]: string }),
     output: {
-      path: path.resolve(appRootDir, 'public'),
+      path: path.resolve(appRootDir, 'dist'),
       filename: 'app/[name].[hash:8].js',
       chunkFilename: 'app/[name].[hash:8].chunk.js',
       publicPath: '/'
@@ -107,7 +108,7 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
       host: '0.0.0.0',
       port: 8360,
       disableHostCheck: true,
-      contentBase: path.join(appRootDir, 'public/'),
+      contentBase: [path.join(appRootDir, 'public'), path.join(appRootDir, 'dist')],
       overlay: {
         errors: true
       },
@@ -128,10 +129,7 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
         common: toApp('common')
       } as { [index: string]: string }),
       mainFields: ["browser", "main"],
-      modules: [
-        "node_modules",
-        toApp('')
-      ],
+      modules: ["node_modules"]
     },
     module: {
       rules: [
@@ -159,10 +157,9 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
                   ['@babel/plugin-proposal-class-properties', { loose: true }]
                 ]
               }
-            },
-            isDev ? { loader: 'eslint-loader' } : null
+            }
           ].filter(i => i),
-          exclude: path.resolve(appRootDir, 'node_modules')
+          include: [path.resolve(appRootDir, 'src')]
         },
         { test: /\.txt$/, use: 'raw-loader' },
         { test: /\.css$/, use: cssLoaders(), },
@@ -191,7 +188,7 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
       isDev && new webpack.NamedModulesPlugin(),
       !isDev && new webpack.HashedModuleIdsPlugin(),
       autoUpdate && new CreateFileWebpack({
-        path: path.resolve(appRootDir, 'public'),
+        path: path.resolve(appRootDir, 'dist'),
         fileName: '__version__',
         content: timestampVersion
       }),

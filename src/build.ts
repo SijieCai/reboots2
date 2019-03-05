@@ -1,12 +1,14 @@
 
-import webpack, { Configuration } from 'webpack';
-import { AnyCnameRecord } from 'dns';
+import * as webpack from 'webpack';
+import { Configuration } from 'webpack';
+import * as config from '../../test/webpack.config';
 const path = require('path');
 const appRootDir = require('app-root-dir').get();
 const rimraf = require('rimraf');
 
+console.log(config.entry);
 // 删除上次编译结果
-export default function (config: Configuration) {
+function build(config: Configuration) {
   rimraf('{public/client,dist,public/__version__,public/nginx}', {}, (e: any) => {
     if (e) return console.log(e);
 
@@ -45,3 +47,4 @@ export default function (config: Configuration) {
     webpack(config, report);
   })
 }
+build(config);

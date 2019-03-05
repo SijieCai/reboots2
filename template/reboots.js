@@ -1,4 +1,4 @@
-import { createConfig } from 'reboots2';
+import { createConfig } from '../src';
 
 const config = createConfig(() => {
   return [
@@ -28,3 +28,5 @@ config.optimization = {
     }
   }
 } 
+
+export default config;
