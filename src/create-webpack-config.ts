@@ -9,6 +9,7 @@ const CreateFileWebpack = require('create-file-webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const defaultTemplatePath = path.join(appRootDir, 'src/template.html');
+const CopyPlugin = require('copy-webpack-plugin');
 
 export interface Entry {
   name: string;
@@ -33,7 +34,7 @@ function toApp(relativePath?: string) {
   return path.resolve(appRootDir, 'src/', relativePath);
 }
 
-export default function(opt: { options: BuildOptions, entries: Entry[] }): Configuration {
+export default (opt: { options: BuildOptions, entries: Entry[] }): Configuration => {
   const { options, entries } = opt;
   const { devtool, APP_ENV, uglify } = options;
   console.log('运行配置：\n' + Object.keys(options).map((key) => `${key}: ${options[key]}`).join('\n'));
@@ -183,6 +184,12 @@ export default function(opt: { options: BuildOptions, entries: Entry[] }): Confi
     plugins: [
       ...htmlEntries,
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
+      !isDev && new CopyPlugin([
+        {
+          from: path.join(appRootDir, 'public/'),
+          to: path.join(appRootDir, 'dist/')
+        },
+      ]),
       isDev && new webpack.NoEmitOnErrorsPlugin(),
       isDev && new webpack.NamedModulesPlugin(),
       !isDev && new webpack.HashedModuleIdsPlugin(),
@@ -202,4 +209,4 @@ export default function(opt: { options: BuildOptions, entries: Entry[] }): Confi
       uglify && new UglifyJsPlugin({ exclude: /\.min\.js$/ }),
     ].filter((i) => i)
   });
-}
+};
