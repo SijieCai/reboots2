@@ -1,19 +1,19 @@
 
-import * as webpack from 'webpack';
-import { Configuration } from 'webpack';
-import * as config from '../../test/webpack.config';
-const path = require('path');
+const webpack = require('webpack');
+import { Configuration, Stats } from 'webpack';
+import * as path from 'path';
 const appRootDir = require('app-root-dir').get();
 const rimraf = require('rimraf');
 
-console.log(config.entry);
+const config: Configuration = require(path.join(appRootDir, 'webpack.config.js'));
+
 // 删除上次编译结果
 function build(config: Configuration) {
-  rimraf('{public/client,dist,public/__version__,public/nginx}', {}, (e: any) => {
+  rimraf('{dist}', {}, (e: any) => {
     if (e) return console.log(e);
 
 
-    function report(err: any, stats: any) {
+    function report(err: Error, stats: Stats): void {
       if (err) {
         return console.error(err);
       }
@@ -30,18 +30,6 @@ function build(config: Configuration) {
       function join(p: string) {
         return path.join(appRootDir, p);
       }
-
-
-      // 生成nginx
-      // const fs = require('fs');
-
-      // fs.mkdirSync(join('public/nginx'));
-      // const data = fs.readFileSync(join('internal/nginx.config.template')).toString();
-
-      // ['dev.', 'dev1.', 'dev2.', 'dev3.', 'beta.', 'beta1.', 'beta2.', ''].forEach(name => {
-      //   let fileContent = data.replace(/<replace_domain>/g, `${name}hulk.corp.qihoo.net`);
-      //   fs.writeFileSync(join(`public/nginx/${name}hulk.corp.qihoo.net.conf`), fileContent);
-      // })
     }
 
     webpack(config, report);
