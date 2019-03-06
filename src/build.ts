@@ -4,7 +4,7 @@ import { Configuration, Stats } from 'webpack';
 import * as path from 'path';
 const appRootDir = require('app-root-dir').get();
 const rimraf = require('rimraf');
-import config from './webpack-config';
+const config = require('./webpack-config');
 
 // 删除上次编译结果
 function build(config: Configuration) {

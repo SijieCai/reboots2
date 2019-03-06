@@ -1,7 +1,7 @@
 
-const { createConfig } = require('reboots2');
+const { createWebpackConfig } = require('reboots2');
 
-const config = createConfig(() => {
+const config = createWebpackConfig(() => {
   return [
     {
       name: 'entry1',

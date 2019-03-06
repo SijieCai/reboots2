@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const appConfig = require('./webpack-config-app');
+const appConfig = require('./webpack-config');
 
 let configs = [appConfig];
 configs.forEach((config, i) => {

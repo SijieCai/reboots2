@@ -8,7 +8,8 @@
   },
   "scripts": {
     "lint": "tslint \"src/**/*.ts\"",
-    "release": "tsc"
+    "build": "npm run lint && tsc",
+    "release": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint && tsc"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run build"
     }
   },
   "homepage": "https://github.com/SijieCai/reboots2#readme",
@@ -65,7 +67,6 @@
     "sass": "^1.17.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "ts-node": "^8.0.2",
     "typescript": "^3.3.3333",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "url-loader": "^1.1.2",
