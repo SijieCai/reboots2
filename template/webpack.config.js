@@ -1,16 +1,17 @@
-import { createConfig } from '../src';
+
+const { createConfig } = require('reboots2');
 
 const config = createConfig(() => {
   return [
     {
-      name: 'system',
-      title: '管理端',
-      splitChunks: ['common']
+      name: 'entry1',
+      title: 'Entry1',
+      splitChunks: ['commons']
     },
     {
-      name: 'client',
-      title: '用户端',
-      splitChunks: ['common']
+      name: 'entry2',
+      title: 'Entry2',
+      splitChunks: ['commons']
     }
   ]
 
@@ -27,6 +28,6 @@ config.optimization = {
       }
     }
   }
-} 
+}
 
-export default config;
+module.exports = config;

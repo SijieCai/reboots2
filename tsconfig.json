@@ -2,12 +2,16 @@
     "compilerOptions": {
         "target": "es2016",
         "module": "commonjs",
-        "lib": ["es2016"],
+        "lib": [
+            "es2016"
+        ],
         "noImplicitAny": true,
-        "removeComments": true,
+        "removeComments": false,
         "preserveConstEnums": true,
         "sourceMap": false,
-        "declaration": true
+        "alwaysStrict": true,
+        "declaration": true,
+        "outDir": "./lib"
     },
     "include": [
         "src/**/*.ts"

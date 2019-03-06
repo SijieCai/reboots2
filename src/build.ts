@@ -4,14 +4,12 @@ import { Configuration, Stats } from 'webpack';
 import * as path from 'path';
 const appRootDir = require('app-root-dir').get();
 const rimraf = require('rimraf');
-
-const config: Configuration = require(path.join(appRootDir, 'webpack.config.js'));
+import config from './webpack-config';
 
 // 删除上次编译结果
 function build(config: Configuration) {
   rimraf('{dist}', {}, (e: any) => {
-    if (e) return console.log(e);
-
+    if (e) { return console.log(e); }
 
     function report(err: Error, stats: Stats): void {
       if (err) {
@@ -33,6 +31,6 @@ function build(config: Configuration) {
     }
 
     webpack(config, report);
-  })
+  });
 }
 build(config);

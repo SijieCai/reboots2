@@ -1,52 +1,51 @@
 
-
 import * as webpack from 'webpack';
 import { Configuration, Options } from 'webpack';
 import 'webpack-dev-server';
 const appRootDir = require('app-root-dir').get();
 import * as path from 'path';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CreateFileWebpack = require('create-file-webpack')
+const CreateFileWebpack = require('create-file-webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const defaultTemplatePath = require.resolve('./template.html');
+const defaultTemplatePath = path.join(appRootDir, 'src/template.html');
 
 export interface Entry {
-  name: string,
-  title: string,
-  icon?: string,
-  splitChunks?: string[],
-  templatePath?: string,
-  appendToHead?: string,
-  appendToBody?: string
+  name: string;
+  title: string;
+  icon?: string;
+  splitChunks?: string[];
+  templatePath?: string;
+  appendToHead?: string;
+  appendToBody?: string;
 }
 
 export interface BuildOptions {
-  APP_ENV: string,
-  NODE_ENV: string,
-  uglify: boolean,
-  autoUpdate: boolean,
-  devtool?: Options.Devtool,
-  [key: string]: any
+  APP_ENV: string;
+  NODE_ENV: string;
+  uglify: boolean;
+  autoUpdate: boolean;
+  devtool?: Options.Devtool;
+  [key: string]: any;
 }
 
 function toApp(relativePath?: string) {
   return path.resolve(appRootDir, 'src/', relativePath);
 }
 
-export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry[] }): Configuration {
+export default function(opt: { options: BuildOptions, entries: Entry[] }): Configuration {
   const { options, entries } = opt;
   const { devtool, APP_ENV, uglify } = options;
-  console.log('运行配置：\n' + Object.keys(options).map(key => `${key}: ${options[key]}`).join('\n'));
+  console.log('运行配置：\n' + Object.keys(options).map((key) => `${key}: ${options[key]}`).join('\n'));
   const { NODE_ENV, autoUpdate } = options;
   const isDev = NODE_ENV === 'development' || NODE_ENV === 'test';
-  var versionScript = '';
-  var timestampVersion = Date.now().valueOf();
+  let versionScript = '';
+  const timestampVersion = Date.now().valueOf();
   if (autoUpdate) {
-    versionScript = `<script>window.__version__ = "${timestampVersion}";</script>`
+    versionScript = `<script>window.__version__ = "${timestampVersion}";</script>`;
   }
 
-  const htmlEntries = entries.map(v => {
+  const htmlEntries = entries.map((v) => {
     return new HtmlWebpackPlugin({
       template: v.templatePath || defaultTemplatePath,
       filename: v.name + '.html',
@@ -55,8 +54,8 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
       chunks: [...(v.splitChunks || []), v.name],
       appendToHead: v.appendToHead,
       appendToBody: v.appendToBody
-    })
-  })
+    });
+  });
   function cssLoaders(loader?: any) {
     const use = [
       'style-loader',
@@ -114,7 +113,7 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
       },
       inline: true,
       historyApiFallback: {
-        rewrites: entries.map(entry => (
+        rewrites: entries.map((entry) => (
           { from: new RegExp(`^\/${entry.name}`), to: `/${entry.name}.html` }
         ))
       },
@@ -143,22 +142,22 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
                 presets: [
                   '@babel/preset-react',
                   ['@babel/preset-env', isDev ? {
-                    "loose": true,
-                    "modules": 'false',
-                    "useBuiltIns": "entry",
-                    "targets": {
-                      "esmodules": true
+                    loose: true,
+                    modules: 'false',
+                    useBuiltIns: "entry",
+                    targets: {
+                      esmodules: true
                     }
-                  } : { "modules": 'false' }]
+                  } : { modules: 'false' }]
                 ],
                 // cacheDirqectory: true,
                 plugins: [
-                  ['@babel/plugin-proposal-decorators', { "legacy": true }],
+                  ['@babel/plugin-proposal-decorators', { legacy: true }],
                   ['@babel/plugin-proposal-class-properties', { loose: true }]
                 ]
               }
             }
-          ].filter(i => i),
+          ].filter((i) => i),
           include: [path.resolve(appRootDir, 'src')]
         },
         { test: /\.txt$/, use: 'raw-loader' },
@@ -201,6 +200,6 @@ export function createWebpackConfig(opt: { options: BuildOptions, entries: Entry
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
       }),
       uglify && new UglifyJsPlugin({ exclude: /\.min\.js$/ }),
-    ].filter(i => i)
-  })
-};
+    ].filter((i) => i)
+  });
+}

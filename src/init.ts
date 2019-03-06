@@ -2,8 +2,10 @@
 const path = require('path');
 const fs = require('fs-extra');
 const spawn = require('cross-spawn');
+const appRoot = require('app-root-dir').get();
+const args = process.argv.slice(3);
 // const chalk = require('chalk');
-module.exports = (appPath, appName, verbose, originalDirectory) => {
+module.exports = (appPath: string, appName: string) => {
   console.log(`options ${appPath}`);
 
   const ownPackageName = require(path.join(__dirname, '..', 'package.json')).name;
@@ -30,8 +32,7 @@ module.exports = (appPath, appName, verbose, originalDirectory) => {
   const templatePath = path.join(ownPath, 'template');
   fs.copySync(templatePath, appPath);
 
-  let args = ['add', 'react', 'react-dom'];
-
+  const args = ['add', 'react', 'react-dom'];
 
   console.log('Success! Created ' + appName + ' at ' + appPath);
 

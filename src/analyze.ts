@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const appConfig = require('./webpack-config-app')
+const appConfig = require('./webpack-config-app');
 
-var configs = [appConfig];
+let configs = [appConfig];
 configs.forEach((config, i) => {
   config.plugins.push(new BundleAnalyzerPlugin({
     analyzerPort: 7330 + i
@@ -20,6 +20,6 @@ function report(err: any, stats: any) {
     chunkModules: false,
     chunkOrigins: false,
     modules: false
-  }))
+  }));
 }
 webpack(appConfig, report);

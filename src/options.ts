@@ -1,6 +1,6 @@
 import { BuildOptions } from './create-webpack-config';
-var argv = require('minimist')(process.argv.slice(2));
-var { NODE_ENV = 'development', APP_ENV = 'development', devtool, uglify, autoUpdate = false } = argv;
+const argv = require('minimist')(process.argv.slice(2));
+let { NODE_ENV = 'development', APP_ENV = 'development', devtool, uglify, autoUpdate = false } = argv;
 
 const supportedEnvs = ['development', 'test', 'beta', 'production'];
 const supportedNodeEnvs = ['development', 'production'];
@@ -17,7 +17,7 @@ if (uglify === undefined) {
   uglify = NODE_ENV === 'production';
 }
 if (devtool === undefined) {
-  devtool = (APP_ENV === 'production' ?  '': '');
+  devtool = (APP_ENV === 'production' ?  '' : '');
 }
 
 const options: BuildOptions = { NODE_ENV, APP_ENV, devtool, uglify, autoUpdate };
