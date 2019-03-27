@@ -32,6 +32,6 @@ fs.writeFileSync(
 const templatePath = path.join(ownPath, 'template');
 fs.copySync(templatePath, appPath);
 
-const child = spawn.sync('npm', ['install', 'react', 'react-dom', '-d'], { stdio: 'inherit' });
+const child = spawn.sync('npm', ['install', 'react', 'react-dom', '-d'], { cwd: appPath, stdio: 'inherit' });
 
 console.log('Success! Created at ' + appPath);
