@@ -28,10 +28,10 @@ fs.writeFileSync(
   JSON.stringify(appPackage, null, 2)
 );
 
-const child = spawn('npm', ['install', 'react', 'react-dom', '-d'], { stdio: 'inherit' });
-
 // Copy the files for the user
 const templatePath = path.join(ownPath, 'template');
 fs.copySync(templatePath, appPath);
+
+const child = spawn.sync('npm', ['install', 'react', 'react-dom', '-d'], { stdio: 'inherit' });
 
 console.log('Success! Created at ' + appPath);
