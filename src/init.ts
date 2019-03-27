@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 const spawn = require('cross-spawn');
 const appRoot = require('app-root-dir').get();
 const args = process.argv.slice(3);
-// const chalk = require('chalk');
 const appPath = appRoot;
 console.log(`options ${appPath}`);
 
@@ -14,6 +13,7 @@ const appPackage = require(path.join(appPath, 'package.json'));
 
 // Copy over some of the devDependencies
 appPackage.dependencies = appPackage.dependencies || {};
+
 appPackage.devDependencies = appPackage.devDependencies || {};
 
 // Setup the script rules
@@ -27,6 +27,8 @@ fs.writeFileSync(
   path.join(appPath, 'package.json'),
   JSON.stringify(appPackage, null, 2)
 );
+
+const child = spawn('npm', ['install', 'react', 'react-dom', '-d'], { stdio: 'inherit' });
 
 // Copy the files for the user
 const templatePath = path.join(ownPath, 'template');

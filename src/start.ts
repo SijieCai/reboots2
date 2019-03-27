@@ -12,6 +12,7 @@ const compiler = Webpack(webpackConfig);
 
 const server = new WebpackDevServer(compiler, devServerOptions);
 
-server.listen(devServerOptions.port, devServerOptions.host, () => {
-  console.log('Starting server on http://localhost:8080');
+const { port, host } = devServerOptions;
+server.listen(port, host, () => {
+  console.log(`Starting server on http://${host}:${port}`);
 });

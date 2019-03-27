@@ -1,6 +1,6 @@
 {
   "name": "reboots2",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "",
   "main": "lib/index.js",
   "bin": {
@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "tslint \"src/**/*.ts\"",
     "build": "npm run lint && tsc",
-    "release": "npm run build"
+    "release": "npm run build",
+    "postinstall": "node lib/postinstall"
   },
   "repository": {
     "type": "git",

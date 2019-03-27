@@ -105,7 +105,7 @@ export default (opt: { options: BuildOptions, entries: Entry[] }): Configuration
     },
     target: 'web',
     devServer: {
-      host: '0.0.0.0',
+      host: '127.0.0.1',
       port: 8360,
       disableHostCheck: true,
       contentBase: [path.join(appRootDir, 'public'), path.join(appRootDir, 'dist')],
