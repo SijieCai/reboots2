@@ -10,7 +10,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const defaultTemplatePath = path.join(appRootDir, 'src/template.html');
 const CopyPlugin = require('copy-webpack-plugin');
-
 export interface Entry {
   name: string;
   title: string;
@@ -93,6 +92,16 @@ export default (opt: { options: BuildOptions, entries: Entry[] }): Configuration
   }
   return ({
     mode: isDev ? 'development' : 'production',
+    optimization: {
+      namedModules: true,
+      noEmitOnErrors: true,
+      minimizer: [
+        new UglifyJsPlugin({
+          exclude:  /\.min\.js$/,
+          parallel: true,
+        })
+      ],
+    },
     entry: entries.reduce((obj, entry) => {
       obj[entry.name] = toApp(entry.name);
       return obj;
@@ -190,8 +199,6 @@ export default (opt: { options: BuildOptions, entries: Entry[] }): Configuration
           to: path.join(appRootDir, 'dist/')
         },
       ]),
-      isDev && new webpack.NoEmitOnErrorsPlugin(),
-      isDev && new webpack.NamedModulesPlugin(),
       !isDev && new webpack.HashedModuleIdsPlugin(),
       autoUpdate && new CreateFileWebpack({
         path: path.resolve(appRootDir, 'dist'),
@@ -206,7 +213,6 @@ export default (opt: { options: BuildOptions, entries: Entry[] }): Configuration
         'process.env.APP_ENV': JSON.stringify(APP_ENV),
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
       }),
-      uglify && new UglifyJsPlugin({ exclude: /\.min\.js$/ }),
     ].filter((i) => i)
   });
 };
